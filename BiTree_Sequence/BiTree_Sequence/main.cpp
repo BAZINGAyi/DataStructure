@@ -32,6 +32,8 @@ Status visit(TElemType c){
 }
 
 // 构造空二叉树 T 。因为 T 是固定数组，不会改变，故不需要 & *。
+// 在顺序存储结构中，初始化和清空二叉树是一样的
+#define InitBiTree ClearBiTree
 Status InitBiTree(SqBiTree T){
     
     for (int i = 0; i < MAXSIZE; i++) {
@@ -43,7 +45,6 @@ Status InitBiTree(SqBiTree T){
     return OK;
 }
 
-// 在顺序存储结构中，初始化和创建二叉树是一样的
 // 注：根据节点位置求双亲节点位置的方法为 (i／2) (1 <= i <= n)
 // 这里位置是从 0 开始的，所以求双亲的位置的方法为 (i + 1)／2  求出来的数还需要减 1
 // 因为是从第 0 个位置开始算，综上：(i + 1)／2 - 1
@@ -53,7 +54,7 @@ Status CreateBiTree(SqBiTree T){
     
     int i = 0;
     
-    while (i < 1) {
+    while (i < 10) {
         
         T[i] = i + 1;
         
@@ -150,7 +151,7 @@ TElemType Value(SqBiTree T, Postion e){
 // 给 e(层，本层序号) 的结点赋新值 value
 // 注：双亲节点为空，该节点的叶子节点必定为空
 //    叶子节点不为空，则它的双亲节点一定不为空。
-Status Assign(SqBiTree T, Postion e,TElemType value){
+Status AssignValue(SqBiTree T, Postion e,TElemType value){
     
     if(BiTreeEmpty(T))
         
@@ -276,7 +277,7 @@ Status PreOrderTraverse(SqBiTree T){
 // 中序遍历调用
 void InTraverse(SqBiTree T, int i){
     
-    if(T[2 * i + 1 != Nil])
+    if(T[2 * i + 1]!= Nil)
         
         InTraverse(T, 2 * i + 1);
     
@@ -302,13 +303,13 @@ Status InOrderTraverse(SqBiTree T){
 // 后序遍历调用
 void PostTravers(SqBiTree T, int i){
     
-    if(T[2 * i + 1 != Nil])
+    if(T[2 * i + 1] != Nil)
         
-        InTraverse(T, 2 * i + 1);
+        PostTravers(T, 2 * i + 1);
     
     if (T[2 * i + 2] != Nil)
         
-        InTraverse(T, 2 * i + 2);
+        PostTravers(T, 2 * i + 2);
     
        visit(T[i]);
 }
@@ -344,7 +345,7 @@ Status LevelOrderTraverse(SqBiTree T){
         
         cout<<"第"<<i<<"层"<<endl;
         
-        for(j = 1; j <= powl(2, j - 1); j++){
+        for(j = 1; j <= powl(2, i - 1); j++){
             
             p.level = i;
             
@@ -391,6 +392,59 @@ int main(int argc, const char * argv[]) {
     else
     
         cout<<"树空"<<endl;
+    
+    cout<<"层序遍历二叉树"<<endl;
+    
+    LevelOrderTraverse(T);
+    
+    cout<<"先序遍历二叉树"<<endl;
+    
+    PreOrderTraverse(T);
+    
+    cout<<"中序遍历二叉树"<<endl;
+    
+    InOrderTraverse(T);
+    
+    cout<<"后序遍历二叉树"<<endl;
+    
+    PostOrderTraverse(T);
+    
+    cout<<"修改结点的层号3本层序号2"<<endl;
+    
+    p.level = 3;
+    
+    p.order = 2;
+    
+    e = Value(T, p);
+    
+    cout<<"代修改的原值为:"<<e<<endl;
+    
+    cout<<"输入修改后的值为50"<<endl;
+    
+    e = 50;
+    
+    AssignValue(T, p, e);
+    
+    cout<<"先序遍历二叉树"<<endl;
+    
+    PreOrderTraverse(T);
+    
+    cout<<"结点"<<e<<"双亲为:"<<Parent(T,e)<<endl<<"左右孩子分别为 0为没有孩子 ";
+    
+    cout<<LeftChild(T,e)<<" "<<RightChild(T,e)<<endl;
+    
+    cout<<"左右兄弟分别为 0为没有兄弟 "<<LeftSibing(T,e)<<" "<<RightSibing(T,e)<<endl;
+    
+    ClearBiTree(T);
+    
+    cout<<"清除二叉树后,树空否？(1:是 0:否) 树的深度"<<BiTreeEmpty(T)<<" "<<BiTreeDepth(T)<<endl;
+    
+    i=Root(T,&e);
+    
+    if(i)
+        cout<<"二叉树的根为："<<e<<endl;
+    else
+          cout<<"树空"<<endl;
     
     
     return 0;
