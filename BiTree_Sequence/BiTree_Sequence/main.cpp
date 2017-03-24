@@ -91,6 +91,7 @@ Status BiTreeEmpty(SqBiTree T){
 
 }
 
+// 由二叉树的性质 2 深度为 k 的二叉树至多有 pow(2,k) - 1 个节点 （k >= 1）
 int BiTreeDepth(SqBiTree T){
     
     if (BiTreeEmpty(T))
@@ -108,11 +109,16 @@ int BiTreeDepth(SqBiTree T){
     
     count++;
     
-//    for (; count <=  ; <#increment#>) {
-//        <#statements#>
-//    }
+    while(1){
+        
+        if(pow(2, depth) - 1 >= count)
+            
+            break;
+        
+        depth++;
+    }
     
-    return OK;
+    return depth;
 }
 //开始判断树的第一个节点的值是否为空
 int BiTreeDepth1(SqBiTree T,int node = 0){
@@ -381,7 +387,7 @@ int main(int argc, const char * argv[]) {
     
     cout<<"建立二叉树后,树空否？(1:是 0:否) 树的深度\n";
     
-    cout<<BiTreeEmpty(T)<<" "<<BiTreeDepth1(T)<<endl;
+    cout<<BiTreeEmpty(T)<<" "<<BiTreeDepth(T)<<endl;
     
     i = Root(T, &e);
     
